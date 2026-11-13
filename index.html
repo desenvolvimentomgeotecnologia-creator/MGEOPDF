@@ -14,6 +14,7 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
 <link rel="stylesheet" href="lib/leaflet.css">
+<link rel="stylesheet" href="extra.css">
 <style>
 :root{
   --pine:#102A24; --pine-2:#18392F; --signal:#F2C230; --signal-ink:#1B1A10;
@@ -59,7 +60,7 @@ svg{display:block}
 .brand-txt{min-width:0}
 .brand-txt b{display:block;font-size:15px;font-weight:750;letter-spacing:.01em}
 .brand-txt span{display:block;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pill-off{pointer-events:auto;margin-left:auto;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:650;
+.pill-off{pointer-events:auto;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:650;
   background:var(--signal);color:var(--signal-ink)}
 
 /* botões laterais */
@@ -185,6 +186,7 @@ input[type=range]{width:46%;accent-color:var(--gps)}
     <span class="brand-txt"><b>MGEO PDF</b><span id="mapName">Nenhum mapa aberto</span></span>
   </button>
   <span class="pill-off" id="pillOff" hidden>Offline</span>
+  <button class="me-btn panel" id="btnMe" aria-label="Meu perfil" hidden><span id="meInitials">?</span></button>
 </header>
 
 <div class="fabs">
@@ -262,6 +264,9 @@ input[type=range]{width:46%;accent-color:var(--gps)}
 <script src="lib/leaflet.js"></script>
 <script src="lib/pdf.min.js"></script>
 <script src="lib/pdf-lib.min.js"></script>
+<script src="lib/supabase.js"></script>
+<script src="config.js"></script>
+<script src="tiles.js"></script>
 <script>
 'use strict';
 const $ = s => document.querySelector(s);
@@ -316,7 +321,7 @@ map.createPane('gps').style.zIndex = 640;
 
 const gUrl = l => `https://mt{s}.google.com/vt/lyrs=${l}&hl=pt-BR&x={x}&y={y}&z={z}`;
 const tileOpt = { subdomains:'0123', maxZoom:22, maxNativeZoom:20, attribution:'Imagens © Google' };
-const bases = { m: L.tileLayer(gUrl('m'), tileOpt), s: L.tileLayer(gUrl('s'), tileOpt), y: L.tileLayer(gUrl('y'), tileOpt), n: null };
+const bases = { m: new OfflineTileLayer('m', gUrl('m'), tileOpt), s: new OfflineTileLayer('s', gUrl('s'), tileOpt), y: new OfflineTileLayer('y', gUrl('y'), tileOpt), n: null };
 let baseKey = null;
 function setBase(k){
   if (baseKey && bases[baseKey]) map.removeLayer(bases[baseKey]);
@@ -817,7 +822,9 @@ function setOnline(){ $('#pillOff').hidden = navigator.onLine; }
 addEventListener('online', setOnline); addEventListener('offline', setOnline);
 
 /* ---------- início ---------- */
-(async function init(){
+let appStarted = false;
+window.startApp = async function(){
+  if (appStarted) return; appStarted = true;
   setOnline();
   const op = store.get('op', '100'); $('#opacity').value = op; $('#opLbl').textContent = op + '%';
   $('#swWake').checked = store.get('wake', true);
@@ -832,7 +839,9 @@ addEventListener('online', setOnline); addEventListener('offline', setOnline);
   const last = store.get('last', null);
   if (last) await openMap(last, true);
   if (store.get('gps', false)) startGPS(false);
-})();
+};
 </script>
+<script src="downloads.js"></script>
+<script src="auth.js"></script>
 </body>
 </html>
