@@ -1,12 +1,12 @@
 /* MGEO PDF – service worker: app 100% offline */
-const VERSION = 'mgeo-pdf-v5';
+const VERSION = 'mgeo-pdf-v6';
 const SHELL_CACHE = VERSION + '-app';
 const TILE_CACHE = 'mgeo-tiles-v1';
 const SHELL = [
   './', './index.html', './manifest.json',
   './lib/leaflet.js', './lib/leaflet.css',
-  './lib/pdf.min.js', './lib/pdf.worker.min.js', './lib/pdf-lib.min.js', './lib/supabase.js',
-  './config.js', './tiles.js', './downloads.js', './auth.js', './extra.css', './privacidade.html',
+  './lib/pdf.min.js', './lib/pdf.worker.min.js', './lib/pdf-lib.min.js',
+  './tiles.js', './downloads.js', './extra.css',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png'
 ];
 

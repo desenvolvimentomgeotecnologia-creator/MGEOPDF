@@ -186,7 +186,6 @@ input[type=range]{width:46%;accent-color:var(--gps)}
     <span class="brand-txt"><b>MGEO PDF</b><span id="mapName">Nenhum mapa aberto</span></span>
   </button>
   <span class="pill-off" id="pillOff" hidden>Offline</span>
-  <button class="me-btn panel" id="btnMe" aria-label="Meu perfil" hidden><span id="meInitials">?</span></button>
 </header>
 
 <div class="fabs">
@@ -264,8 +263,6 @@ input[type=range]{width:46%;accent-color:var(--gps)}
 <script src="lib/leaflet.js"></script>
 <script src="lib/pdf.min.js"></script>
 <script src="lib/pdf-lib.min.js"></script>
-<script src="lib/supabase.js"></script>
-<script src="config.js"></script>
 <script src="tiles.js"></script>
 <script>
 'use strict';
@@ -842,6 +839,6 @@ window.startApp = async function(){
 };
 </script>
 <script src="downloads.js"></script>
-<script src="auth.js"></script>
+<script>startApp();</script>
 </body>
 </html>
