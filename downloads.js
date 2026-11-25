@@ -235,6 +235,7 @@
     if (aborted) toast(`Download interrompido. ${fmtBytes(bytes)} já ficaram salvos.`);
     else if (fail) toast(`${fail} blocos falharam. Toque em Baixar de novo para completar.`, true);
     else toast(`Fundo salvo: ${fmtBytes(bytes)} (${kbFull(bytes)})`);
+    if (window.MGEO_TRACK) MGEO_TRACK('offline_download', { bytes, blocos: done - fail, lyr: p.lyr });
   };
 
   window.MGEO_OFFLINE = { refresh: renderPacks };

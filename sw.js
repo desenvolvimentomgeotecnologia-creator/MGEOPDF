@@ -1,12 +1,13 @@
 /* MGEO PDF – service worker: app 100% offline */
-const VERSION = 'mgeo-pdf-v6';
+const VERSION = 'mgeo-pdf-v7';
 const SHELL_CACHE = VERSION + '-app';
 const TILE_CACHE = 'mgeo-tiles-v1';
 const SHELL = [
   './', './index.html', './manifest.json',
   './lib/leaflet.js', './lib/leaflet.css',
   './lib/pdf.min.js', './lib/pdf.worker.min.js', './lib/pdf-lib.min.js',
-  './tiles.js', './downloads.js', './extra.css',
+  './app.js', './tiles.js', './downloads.js', './auth.js', './gerencial.js', './extra.css', './gerencial.css',
+  './termos.html', './privacidade.html', './doc.css', './img/logo-full.png', './img/logo-white.png', './img/symbol.png',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png'
 ];
 
@@ -30,7 +31,7 @@ self.addEventListener('fetch', e => {
   const url = new URL(req.url);
   // downloads do botão "Baixar fundo" (cors) vão direto: o app guarda no IndexedDB
   if (isTile(url)) { if (req.mode !== 'cors') e.respondWith(tile(req)); return; }
-  if (url.origin === self.location.origin) e.respondWith(app(req, e));
+  if (url.origin === self.location.origin && !url.pathname.startsWith('/api/')) e.respondWith(app(req, e));
 });
 
 // Blocos do Google: o app guarda no IndexedDB (botão "Baixar fundo para offline").
